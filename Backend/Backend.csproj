@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
     <Folder Include="Domain\Services\" />
     <Folder Include="Domain\Repositories\" />
     <Folder Include="Services\" />
