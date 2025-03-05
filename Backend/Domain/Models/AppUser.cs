@@ -4,9 +4,9 @@ namespace Backend.Domain.Models
 {
     public class AppUser
     {
-        public Guid UserId { get; set; }
+        public ICollection<Collection> Collections { get; set; } = new List<Collection>();
 
-        [Required]
-        public string Role { get; set; } = null!;
+        //[Required]
+        //public string Role { get; set; } = null!;
     }
 }

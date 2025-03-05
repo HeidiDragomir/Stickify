@@ -6,11 +6,18 @@ namespace Backend.Domain.Models
     {
         public Guid StickyNoteId { get; set; }
 
-        public Guid UserId { get; }
+        [Required]
+        [MaxLength(500)]
+        public string Content { get; set; } = null!;
 
-        public Guid CollectionId { get; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime? UpdatedAt { get; set; }
 
         [Required]
-        public string BodyText { get; set; } = null!;
+        public Guid CollectionId { get; } // Foreign key
+
+        public Collection? Collection { get; set; } // Navigation Property
+
     }
 }
