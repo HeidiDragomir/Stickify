@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* after choosing your color palette, declare main colors as variables in ::root */
+
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+    interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    min-height: 100vh;
+    width: 100%; 
+    margin: 0 auto;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    color: #212529;
+    background-color: #f8f9fa;
+}
+
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+}
+
+#root, #__next {
+    isolation: isolate;
+}
+
+
+/* page wrapper */
+.container {
+    width: calc(100% - 60px);
+}
+
+
+
+

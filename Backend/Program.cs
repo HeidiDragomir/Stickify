@@ -1,6 +1,7 @@
 using Backend.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Backend.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +16,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("AppDbContextConnection")));
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
-
+//builder.Services.AddIdentityApiEndpoints<AppUser>()
+//    .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -34,8 +37,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.MapIdentityApi<AppUser>();
+
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Domain.Models
 {
-    public class AppUser
+    public class AppUser : IdentityUser
     {
         public ICollection<Collection> Collections { get; set; } = new List<Collection>();
 
