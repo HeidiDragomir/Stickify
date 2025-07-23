@@ -5,9 +5,11 @@ namespace Backend.Domain.Models
 {
     public class AppUser : IdentityUser
     {
-        public ICollection<Collection> Collections { get; set; } = new List<Collection>();
 
-        //[Required]
-        //public string Role { get; set; } = null!;
+        [Required]
+        public string Username { get; set; } = string.Empty;
+
+        [Required]
+        public string Email { get; set; } = string.Empty;
     }
 }

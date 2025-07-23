@@ -8,9 +8,10 @@ namespace Backend.Domain.Models
 
         [Required]
         [MaxLength(20)]
-        public string Name { get; set; } = null!;
+        public string Title { get; set; } = string.Empty;
 
-        public Guid UserId { get; } // Foreign Key
+        [Required]
+        public Guid UserId { get; set;  } // Foreign Key
 
         public AppUser? User { get; set; } // Navigation Property
 

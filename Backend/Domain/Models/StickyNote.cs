@@ -8,14 +8,14 @@ namespace Backend.Domain.Models
 
         [Required]
         [MaxLength(500)]
-        public string Content { get; set; } = null!;
+        public string Content { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }
 
         [Required]
-        public Guid CollectionId { get; } // Foreign key
+        public Guid CollectionId { get; set; } // Foreign key
 
         public Collection? Collection { get; set; } // Navigation Property
 
