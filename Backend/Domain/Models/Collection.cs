@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Domain.Models
 {
@@ -7,11 +8,11 @@ namespace Backend.Domain.Models
         public Guid CollectionId { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
-        public Guid UserId { get; set;  } // Foreign Key
+        public string UserId { get; set; } = string.Empty; // Foreign Key
 
         public AppUser? User { get; set; } // Navigation Property
 

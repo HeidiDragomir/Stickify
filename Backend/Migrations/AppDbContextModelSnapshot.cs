@@ -28,17 +28,18 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("CollectionId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Collections");
                 });
@@ -49,7 +50,7 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CollectionId1")
+                    b.Property<Guid>("CollectionId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Content")
@@ -65,7 +66,7 @@ namespace Backend.Migrations
 
                     b.HasKey("StickyNoteId");
 
-                    b.HasIndex("CollectionId1");
+                    b.HasIndex("CollectionId");
 
                     b.ToTable("StickyNotes");
                 });
@@ -286,7 +287,9 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Domain.Models.AppUser", "User")
                         .WithMany("Collections")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -295,7 +298,9 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Domain.Models.Collection", "Collection")
                         .WithMany("StickyNotes")
-                        .HasForeignKey("CollectionId1");
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Collection");
                 });

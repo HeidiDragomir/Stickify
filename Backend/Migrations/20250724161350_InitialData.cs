@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -203,19 +203,20 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     CollectionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Title = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId1 = table.Column<string>(type: "varchar(255)", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Collections", x => x.CollectionId);
                     table.ForeignKey(
-                        name: "FK_Collections_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Collections_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -228,16 +229,17 @@ namespace Backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CollectionId1 = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    CollectionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StickyNotes", x => x.StickyNoteId);
                     table.ForeignKey(
-                        name: "FK_StickyNotes_Collections_CollectionId1",
-                        column: x => x.CollectionId1,
+                        name: "FK_StickyNotes_Collections_CollectionId",
+                        column: x => x.CollectionId,
                         principalTable: "Collections",
-                        principalColumn: "CollectionId");
+                        principalColumn: "CollectionId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -279,14 +281,14 @@ namespace Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Collections_UserId1",
+                name: "IX_Collections_UserId",
                 table: "Collections",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StickyNotes_CollectionId1",
+                name: "IX_StickyNotes_CollectionId",
                 table: "StickyNotes",
-                column: "CollectionId1");
+                column: "CollectionId");
         }
 
         /// <inheritdoc />
