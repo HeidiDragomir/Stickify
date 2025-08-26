@@ -23,9 +23,7 @@
   <ItemGroup>
     <Folder Include="Areas\NewFolder\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Domain\Services\" />
     <Folder Include="Domain\Repositories\" />
-    <Folder Include="Services\" />
     <Folder Include="Persistence\Repositories\" />
   </ItemGroup>
 

@@ -15,7 +15,7 @@ namespace Backend.Persistence.Context
 
         public DbSet<Collection> Collections { get; set; }
 
-        public DbSet<AppUser> AppUsers { get; set; }
+        //public DbSet<AppUser> AppUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +32,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
+
+
+// Register the IEmailSender interface
+builder.Services.AddSingleton<IEmailSender<AppUser>, EmailSender>();
 
 
 // Configure JWT Authentication
@@ -83,6 +86,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -100,11 +104,6 @@ app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
-
-// Enable Identity APIs
-app.MapIdentityApi<AppUser>();
 
 app.MapControllers();
 
