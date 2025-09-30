@@ -1,13 +1,21 @@
 using Backend.Domain.Models;
+using Backend.Domain.Services;
+using Backend.Mapping;
 using Backend.Persistence.Context;
+using Backend.Persistence.Data;
+using Backend.Services;
 using Backend.Utility;
+using Backend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotNetEnv.Env.Load();
 
 builder.Services.AddControllers();
 
@@ -22,7 +30,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 // Configure Identity
-
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     // User settings
@@ -37,12 +44,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 // Register the IEmailSender interface
 builder.Services.AddSingleton<IEmailSender<AppUser>, EmailSender>();
 
+// Register JWT manager
+builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Get JWT Authentication
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new Exception("JwtSecretKey missing.");
+var jwtIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer") ?? throw new Exception("Jwt:Issuer missing.");
+var jwtAudience = builder.Configuration.GetValue<string>("Jwt:Audience") ?? throw new Exception("Jwt:Audience missing.");
 
 // Configure JWT Authentication
-var jwtKey = builder.Configuration.GetValue<string>("Jwt:Key");
-var jwtIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer");
-var jwtAudience = builder.Configuration.GetValue<string>("Jwt:Audience");
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  // Sets JWT as the default authentication scheme
@@ -50,13 +62,11 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    var keyBytes = Encoding.ASCII.GetBytes(jwtKey);
-
     options.SaveToken = true;     // Ensures the token is stored when authentication succeeds
 
     options.TokenValidationParameters = new TokenValidationParameters     // Defines token validation rules
     {
-        IssuerSigningKey = new SymmetricSecurityKey(keyBytes),      // Uses the secret key for validating the token signature
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),      // Uses the secret key for validating the token signature
         ValidateLifetime = true,    // Ensures the token hasn't expired
         ValidateAudience = true,    // Checks if the token's audience matches the expected audience
         ValidAudience = jwtAudience,   // Sets the valid audience from configuration
@@ -66,6 +76,9 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(cfg => { }, typeof(AuthProfile));
 
 
 // Add Authorization
@@ -95,6 +108,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Run the role seeder and default admin account at application startup
+using (var scope = app.Services.CreateScope())
+{
+    // Get services from DI container
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
+    // Ensure roles exist
+    await RoleAndAdminSeeder.SeedRolesAsync(roleManager);
+
+    // Ensure there is at least one admin account
+    await RoleAndAdminSeeder.SeedAdminAsync(userManager, roleManager);
+}
+
 
 app.UseHttpsRedirection();
 

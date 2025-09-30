@@ -5,8 +5,10 @@ namespace Backend.Domain.Services
     public interface IAuthService
     {
 
-        Task<RegisterResDTO> Register(RegisterReqDTO user);
+        Task<AuthResDTO?> Register(RegisterDTO dto);
 
-        Task<AuthResDTO> Login(AuthReqDTO user);
+        Task<AuthResDTO?> Login(LoginDTO dto);
+
+        Task<AuthResDTO?> RefreshToken(string token);
     }
 }
