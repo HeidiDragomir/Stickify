@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+
+html {
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI',
+    roboto, 'Helvetica Neue', arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', serif;
+    font-size: 1rem;
+    color: var(--page-color);
+    background-color: var(--page-background);
+    transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    margin: 0;
+    overflow: hidden auto;
+}
+
+html,
+body {
+    height: 100vh;
+    min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1 {
+    margin: 0;
+}
+
+ul {
+    padding-inline-start: 0;
+
+    li {
+        list-style: none;
+    }
+}
