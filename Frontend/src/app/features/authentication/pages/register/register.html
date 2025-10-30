@@ -1,1 +1,140 @@
-<p>register works!</p>
+<div class="flex flex-col min-h-screen">
+    <div class="flex flex-1 items-center justify-center px-4 py-12 sm:py-16">
+        <div
+            class="flex flex-col items-center justify-center w-full max-w-md sm:max-w-lg md:max-w-xl bg-[#0466c8] border-2 border-[#011428] rounded-2xl gap-8 p-8 sm:p-12"
+        >
+            <form
+                [formGroup]="registerForm"
+                (ngSubmit)="onSubmit()"
+                class="flex flex-col gap-4 w-full"
+            >
+                <div>
+                    <label
+                        for="username"
+                        class="text-lg font-medium text-white block mb-1 text-left"
+                    >
+                        Username
+                    </label>
+
+                    <input
+                        id="username"
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        formControlName="userName"
+                        class="block w-full px-4 py-2 text-lg font-normal text-gray-700 border-solid border-2 transition ease-in-out m-0 focus:text-gray-700 bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+                        required
+                    />
+                    @if(userName?.invalid && (userName?.dirty || userName?.touched)) {
+                    <div class="text-red-600 text-sm mt-1">
+                        @if(userName?.hasError("required")) {
+                        <div>Username is required.</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div>
+                    <label for="email" class="text-lg font-medium text-white block mb-1 text-left">
+                        Email address
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        formControlName="email"
+                        class="block w-full px-4 py-2 text-lg font-normal text-gray-700 border-solid border-2 transition ease-in-out m-0 focus:text-gray-700 bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+                        required
+                    />
+                    @if(email?.invalid && (email?.dirty || email?.touched)) {
+                    <div class="text-red-600 text-sm mt-1">
+                        @if(email?.hasError("required")) {
+                        <div>Email is required.</div>
+                        } @if(email?.hasError("email")) {
+                        <div>Enter a valid email address.</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div>
+                    <label
+                        for="password"
+                        class="text-lg font-medium text-white block mb-1 text-left"
+                    >
+                        Password
+                    </label>
+
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        formControlName="password"
+                        class="block w-full px-4 py-2 text-lg font-normal text-gray-700 border-solid border-2 transition ease-in-out m-0 focus:text-gray-700 bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+                        required
+                    />
+                    @if(password?.invalid && (password?.dirty || password?.touched)) {
+                    <div class="text-red-600 text-sm mt-1">
+                        @if(password?.hasError("required")) {
+                        <div>Password is required.</div>
+                        } @if(password?.hasError("passwordStrength")) {
+                        <div>{{ password?.getError('passwordStrength')?.message }}</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div>
+                    <label
+                        for="confirmPassword"
+                        class="text-lg font-medium text-white block mb-1 text-left"
+                    >
+                        Confirm Password
+                    </label>
+
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        formControlName="confirmPassword"
+                        class="block w-full px-4 py-2 text-lg font-normal text-gray-700 border-solid border-2 transition ease-in-out m-0 focus:text-gray-700 bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+                        required
+                    />
+                    @if(confirmPassword?.invalid && (confirmPassword?.dirty ||
+                    confirmPassword?.touched)) {
+                    <div class="text-red-600 text-sm mt-1">
+                        @if(confirmPassword?.hasError("required")) {
+                        <div>Confirm password is required.</div>
+                        }
+                    </div>
+                    } @if(registerForm.hasError('passwordDontMatch') && (confirmPassword?.dirty ||
+                    confirmPassword?.touched)) {
+                    <div class="text-red-600 text-sm mt-1">Passwords didn't match.</div>
+                    }
+                </div>
+
+                <div class="flex-col">
+                    <div class="flex justify-center my-6">
+                        <button
+                            type="submit"
+                            class="text-white border-white hover:bg-sapphire-900 hover:text-black hover:border-black sm:w-auto transition flex items-center justify-center cursor-pointer w-fit h-[45px] sm:h-[55px] border-solid border-2 rounded-md text-sm sm:text-xl font-semibold text-center px-4 py-2 uppercase italic"
+                            [disabled]="formState().isLoading"
+                        >
+                            @if(formState().isLoading) {
+                            <span class="animate-pulse">Loading...</span>
+                            } @else { Create account }
+                        </button>
+                    </div>
+                </div>
+
+                <p class="text-white text-center text-sm sm:text-base">
+                    Already have an account?
+                    <span class="cursor-pointer font-semibold hover:text-black">
+                        Sign in here.
+                    </span>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
