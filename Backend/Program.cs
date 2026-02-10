@@ -19,13 +19,12 @@ DotNetEnv.Env.Load();
 
 builder.Services.AddControllers();
 
-// Configure Entity Framework with MySQL
+// Configure Entity Framework with SQL server
 var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseMySql(connectionString,
-    ServerVersion.AutoDetect(connectionString));
+    options.UseSqlServer(connectionString);
 });
 
 
